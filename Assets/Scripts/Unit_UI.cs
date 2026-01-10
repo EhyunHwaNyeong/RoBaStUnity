@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems; // 필수
 
-public class Unit_UI : MonoBehaviour
+public class Unit_UI : MonoBehaviour, IPointerClickHandler
 {
     public GameObject unitCanvas; // 미리 만들어둔 World Space Canvas
 
@@ -11,7 +12,7 @@ public class Unit_UI : MonoBehaviour
     }
 
     // 유닛(Collider2D 필요)을 클릭했을 때 호출
-    private void OnMouseDown()
+    public void OnPointerClick(PointerEventData eventData)
     {
         ToggleUI();
     }
