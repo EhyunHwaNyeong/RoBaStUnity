@@ -101,8 +101,8 @@ GameObject:
   m_Component:
   - component: {fileID: 501489609657006441}
   - component: {fileID: 6534318291734488123}
-  - component: {fileID: 7566095405791277796}
   - component: {fileID: 3264510669237390585}
+  - component: {fileID: 849137113480485060}
   m_Layer: 7
   m_Name: Black_Commander
   m_TagString: Black
@@ -188,7 +188,20 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!58 &7566095405791277796
+--- !u!114 &3264510669237390585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624043341930224424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d39117aba78795b49b93438ff7c0b953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit_UI
+  unitCanvas: {fileID: 4425640603319414197}
+--- !u!58 &849137113480485060
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,21 +235,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.06859905}
-  m_Radius: 2.3922
---- !u!114 &3264510669237390585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624043341930224424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d39117aba78795b49b93438ff7c0b953, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Unit_UI
-  unitCanvas: {fileID: 4425640603319414197}
+  m_Offset: {x: 0, y: 0.000000059604645}
+  m_Radius: 2.5
 --- !u!1 &963517752179073559
 GameObject:
   m_ObjectHideFlags: 0
