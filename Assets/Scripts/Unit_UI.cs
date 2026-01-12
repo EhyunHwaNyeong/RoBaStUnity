@@ -14,28 +14,15 @@ public class Unit_UI : MonoBehaviour, IPointerClickHandler
     // 유닛(Collider2D 필요)을 클릭했을 때 호출
     public void OnPointerClick(PointerEventData eventData)
     {
-        ToggleUI();
-        Debug.Log($"{gameObject.name} 클릭 시도!");
-        
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.selectedObject = this.gameObject;
-            Debug.Log("GameManager에 오브젝트 등록 성공!");
+            // [핵심] GameManager에게 나를 선택하라고 명령합니다.
+            GameManager.Instance.SelectNewObject(this.gameObject, unitCanvas);
+            Debug.Log($"{gameObject.name} 선택 및 GameManager 등록 요청");
         }
         else
         {
-            Debug.LogError("GameManager 인스턴스를 찾을 수 없습니다! 하이러키를 확인하세요.");
-        }
-    }
-
-    public void ToggleUI()
-    {
-        bool isActive = unitCanvas.activeSelf;
-        unitCanvas.SetActive(!isActive);
-        
-        if (!isActive) {
-            // UI가 켜질 때 애니메이션이나 연출을 추가할 수 있습니다.
-            Debug.Log("UI 표시됨");
+            Debug.LogError("GameManager를 찾을 수 없습니다!");
         }
     }
 }
