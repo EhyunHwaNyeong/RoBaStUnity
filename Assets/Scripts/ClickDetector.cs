@@ -1,10 +1,13 @@
 using UnityEngine;
-using UnityEngine.EventSystems; // 필수
 
-public class ClickDetector : MonoBehaviour, IPointerClickHandler
+public class SelectableItem : MonoBehaviour
 {
-    public void OnPointerClick(PointerEventData eventData)
+    private void OnMouseDown()
     {
-        Debug.Log("이벤트 시스템을 통한 클릭 감지!");
+        // 클릭 시 Game Manager에 자신을 등록
+        GameManager.Instance.selectedObject = this.gameObject;
+        Debug.Log($"{gameObject.name}이(가) 선택되었습니다.");
+        
+        // 여기서 UI를 활성화하는 로직을 추가할 수도 있습니다.
     }
 }

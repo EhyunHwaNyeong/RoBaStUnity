@@ -15,6 +15,17 @@ public class Unit_UI : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         ToggleUI();
+        Debug.Log($"{gameObject.name} 클릭 시도!");
+        
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.selectedObject = this.gameObject;
+            Debug.Log("GameManager에 오브젝트 등록 성공!");
+        }
+        else
+        {
+            Debug.LogError("GameManager 인스턴스를 찾을 수 없습니다! 하이러키를 확인하세요.");
+        }
     }
 
     public void ToggleUI()
