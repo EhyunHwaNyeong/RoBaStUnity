@@ -262,7 +262,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_MaskInteraction: 0
   m_Sprite: {fileID: 6033343748246627105, guid: b19d3f39c7b3994479bf278061e24a96, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -353,7 +353,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_MaskInteraction: 0
   m_Sprite: {fileID: 6515695052475547063, guid: 2493d6e3279f0b54ba0efb4ef8c5fe3c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 1053658146358554656}
   - component: {fileID: 5923474595638902093}
   - component: {fileID: 3581599987761902800}
-  - component: {fileID: 546185324250498050}
+  - component: {fileID: 6856829766701275785}
   m_Layer: 7
   m_Name: Black_Commander
   m_TagString: Black
@@ -606,7 +606,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 1275306620922418128, guid: 5528d4f1385b2914ab763b0be10ba337, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -654,7 +654,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: -0.06859905}
   m_Radius: 2.3922
---- !u!114 &546185324250498050
+--- !u!114 &6856829766701275785
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -663,7 +663,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7033353852552468334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05fbf4d048d383f42851951bd46aef25, type: 3}
+  m_Script: {fileID: 11500000, guid: d39117aba78795b49b93438ff7c0b953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit_UI
   unitCanvas: {fileID: 2229502029378851720}
@@ -746,7 +746,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2912511950805730414, guid: 0c9b4a720ff553a428961aa1292d9924, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 1111860030469468890}
   - component: {fileID: 2951051913082191313}
   m_Layer: 0
-  m_Name: straight_0 (1)
+  m_Name: Back_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -837,7 +837,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_MaskInteraction: 0
   m_Sprite: {fileID: 6515695052475547063, guid: 2493d6e3279f0b54ba0efb4ef8c5fe3c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
