@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16b110cce99f3814183704d6dc3bbe14, type: 3}
   m_Name: Unit_AP_Counter_White
   m_EditorClassIdentifier: Assembly-CSharp::LayerData
-  targetTag: 
+  targetTag: White
   maxCapacity: 3
   currentAmount: 2
