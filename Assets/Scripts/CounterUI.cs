@@ -11,7 +11,7 @@ public class CounterUI : MonoBehaviour
         var data = ResourceManager.Instance.layerDataList.Find(d => d.targetTag == targetTag);
         if (data != null)
         {
-            counterText.text = $"{targetTag}: {data.currentAmount} / {data.maxCapacity}";
+            counterText.text = $"{data.currentAmount} / {data.maxCapacity}";
         }
     }
 }

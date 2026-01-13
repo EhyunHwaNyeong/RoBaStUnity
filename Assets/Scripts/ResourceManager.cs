@@ -20,16 +20,27 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    public bool TryConsume(string tag, int cost)
+    public bool TryConsume(int cost, params string[] tags) // cost를 앞으로 보냈습니다.
     {
-        // layerName 대신 targetTag와 비교합니다.
-        LayerData target = layerDataList.Find(d => d.targetTag == tag);
-        
-        if (target != null && target.currentAmount >= cost)
+        foreach (string tag in tags)
         {
-            target.currentAmount -= cost;
-            return true;
+            LayerData target = layerDataList.Find(d => d.targetTag == tag);
+            
+            // 해당 태그의 자원이 부족하면 바로 거절
+            if (target == null || target.currentAmount < cost)
+            {
+                Debug.Log($"{tag} 자원이 부족하거나 없습니다.");
+                return false; 
+            }
         }
-        return false;
+
+        // 모든 태그의 자원이 충분할 때만 일괄 소모
+        foreach (string tag in tags)
+        {
+            LayerData target = layerDataList.Find(d => d.targetTag == tag);
+            target.currentAmount -= cost;
+        }
+        
+        return true;
     }   
 }
