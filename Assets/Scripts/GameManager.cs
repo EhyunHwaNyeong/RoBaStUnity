@@ -109,7 +109,25 @@ public class GameManager : MonoBehaviour
     {
         if (selectedObject == null) return;
 
-        // 이동 및 회전 로직
+        // 1. 동작별 소모 비용 설정 (원하시는 대로 숫자를 바꾸세요)
+        int cost = 0;
+        switch (action)
+        {
+            case "Up": cost = 1; break;    // 전진은 1 소모
+            case "Down": cost = 2; break;  // 후진은 2 소모
+            case "Left": cost = 1; break;  // 회전은 1 소모
+            case "Right": cost = 1; break; // 회전은 1 소모
+        }
+
+        // 2. AP 체크 및 소모 (Tag에 따라 분기)
+        string unitTag = selectedObject.tag; // "Black" 또는 "White"
+        if (!AP_Counter_Manager.Instance.ConsumeAP(unitTag, cost))
+        {
+            Debug.Log($"{unitTag} 팀의 AP가 부족합니다!");
+            return; // AP 부족 시 아래 이동 로직 실행 안 함
+        }
+
+        // 3. 실제 이동/회전 로직 (기존 코드)
         switch (action)
         {
             case "Up": selectedObject.transform.position += selectedObject.transform.up * moveAmount; break;
@@ -118,10 +136,7 @@ public class GameManager : MonoBehaviour
             case "Right": selectedObject.transform.Rotate(0, 0, -90f); break;
         }
 
-        // 이동 후 새로운 위치를 기준으로 버튼 상태 즉시 갱신
         UpdateNavigationButtons();
-
-        // 레이어 설정(hideAfterAction)에 따라 UI를 닫을지 결정
         CheckAndHideUI(selectedObject.layer);
     }
 
