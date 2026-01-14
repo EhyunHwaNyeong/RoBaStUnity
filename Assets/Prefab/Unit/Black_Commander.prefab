@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 5923474595638902093}
   - component: {fileID: 3581599987761902800}
   - component: {fileID: 6856829766701275785}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Black_Commander
   m_TagString: Black
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.3100002, y: 1.69, z: 0}
-  m_LocalScale: {x: 0.39500245, y: 0.3959915, z: 0.3959915}
+  m_LocalScale: {x: 0.28327996, y: 0.28398925, z: 0.28398925}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7072263155794799116}
@@ -320,7 +320,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1402600744338061699, guid: 77b5645d1e0bcf84993dadee856edaeb, type: 3}
+  m_Sprite: {fileID: 1275306620922418128, guid: 5528d4f1385b2914ab763b0be10ba337, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
