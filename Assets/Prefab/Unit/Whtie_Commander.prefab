@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 7305153864600221719}
   - component: {fileID: 4766271667560747754}
   - component: {fileID: 4796049199015523536}
+  - component: {fileID: 6086072268767692528}
   m_Layer: 7
   m_Name: Whtie_Commander
   m_TagString: White
@@ -300,6 +301,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39117aba78795b49b93438ff7c0b953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit_UI
+--- !u!114 &6086072268767692528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7700098525461851809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02d80c77861e7d64bad0fa75a6a7ead5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitData
+  deathCount: 0
+  isDead: 0
 --- !u!1 &7765847901694487253
 GameObject:
   m_ObjectHideFlags: 0

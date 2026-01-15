@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
         }
 
         selectedObject = newObj;
+        AP_Counter_Manager.Instance.ShowTeamPanel(newObj.tag);
 
         // 해당 레이어의 UI 설정 찾기
         string layerName = LayerMask.LayerToName(newObj.layer);
@@ -69,6 +70,7 @@ public class GameManager : MonoBehaviour
             // 이동 가능 여부 체크하여 버튼 활성화
             UpdateNavigationButtons();
         }
+        KillManager.Instance.UpdateKillButtonUI(newObj);
     }
 
     // --- 2. 이동 및 장애물 판정 로직 ---
@@ -164,6 +166,9 @@ public class GameManager : MonoBehaviour
 
         // [핵심 해결법] 2. 물리 위치 강제 동기화 (이동 직후 판정 오류 방지)
         Physics2D.SyncTransforms();
+
+        // 조작한 유닛 기준으로 전방에 적이 있는지 확인
+        KillManager.Instance.CheckAndApplyDeathRules(selectedObject);
 
         // 3. UI 처리 실행
         CheckAndHideUI(selectedObject.layer);
