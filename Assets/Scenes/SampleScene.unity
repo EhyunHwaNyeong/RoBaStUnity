@@ -365,6 +365,7 @@ Transform:
   - {fileID: 25558936}
   - {fileID: 448361620}
   - {fileID: 533771759}
+  - {fileID: 2058167379}
   - {fileID: 2011955631}
   - {fileID: 1232457093}
   m_Father: {fileID: 0}
@@ -1354,7 +1355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 190, y: 503}
+  m_AnchoredPosition: {x: 197, y: 503.7}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1113965685
@@ -1626,6 +1627,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f12e53e1730aef841bd7967e98587d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KillManager
+  targetTilemap: {fileID: 1749343102}
+  deathUnitArea: {fileID: 0}
   teamSettings:
   - teamTag: White
     killButton: {fileID: 1399059464}
@@ -1633,7 +1636,6 @@ MonoBehaviour:
   - teamTag: Black
     killButton: {fileID: 1315465793}
     deathArea: {fileID: 1592218889}
-  targetTilemap: {fileID: 1749343102}
 --- !u!1 &1315465793
 GameObject:
   m_ObjectHideFlags: 0
@@ -1717,6 +1719,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2058167378}
+        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
+        m_MethodName: SwitchTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2011955632}
         m_TargetAssemblyTypeName: AP_Counter_Manager, Assembly-CSharp
         m_MethodName: RestoreTeamAP
@@ -1946,6 +1960,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2058167378}
+        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
+        m_MethodName: SwitchTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2011955632}
         m_TargetAssemblyTypeName: AP_Counter_Manager, Assembly-CSharp
         m_MethodName: RestoreTeamAP
@@ -3144,7 +3170,7 @@ MonoBehaviour:
     apPanel: {fileID: 1833048107}
     apText: {fileID: 1523381646}
   maxAP: 3
-  restoreAmount: 2
+  restoreAmount: 3
   blackCurrentAP: 0
   whiteCurrentAP: 0
 --- !u!1001 &2052352871
@@ -3208,6 +3234,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e60db872bd5d5af4ab8d46b0c8e2729b, type: 3}
+--- !u!1 &2058167377
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2058167379}
+  - component: {fileID: 2058167378}
+  m_Layer: 0
+  m_Name: TurnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2058167378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058167377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c7fa4c19d46794783b776c70b2ab06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnManager
+  currentTurnTag: Black
+--- !u!4 &2058167379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058167377}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 214825297}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7808841244030798346
 PrefabInstance:
   m_ObjectHideFlags: 0

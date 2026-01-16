@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,8 +8,8 @@ public class UIManager : MonoBehaviour
     [System.Serializable]
     public struct LayerUI
     {
-        public string teamTag;       // "White" 또는 "Black"
-        public string layerName;     // "Commander" 또는 "Knight"
+        public string teamTag;       
+        public string layerName;     
         public GameObject uiPanel;    
         public bool hideAfterAction;  
     }
@@ -32,10 +31,9 @@ public class UIManager : MonoBehaviour
         CloseAllUI();
     }
 
-    // --- 유닛 선택 시 UI 출력 ---
     public void ShowUnitUI(GameObject unit)
     {
-        CloseAllUI(); // 기존 UI 정리
+        CloseAllUI();
 
         string layerName = LayerMask.LayerToName(unit.layer);
         var target = layerUIList.Find(x => x.layerName == layerName && x.teamTag == unit.tag);
@@ -50,48 +48,23 @@ public class UIManager : MonoBehaviour
 
             currentPanelScript = currentActiveUI.GetComponent<UnitUIPanel>();
             
-            // 버튼 상태 갱신
             RefreshNavigationButtons(unit);
         }
     }
 
-    // --- 이동 가능 여부 체크 및 버튼 출력 결정 ---
     public void RefreshNavigationButtons(GameObject unit)
     {
         if (unit == null || currentPanelScript == null) return;
 
-        // 1. 이동 버튼 갱신 (기존 로직)
         Vector3Int currentCell = GameManager.Instance.targetTilemap.WorldToCell(unit.transform.position);
         Vector3Int forwardDir = Vector3Int.RoundToInt(unit.transform.up);
         int unitLayerMask = LayerMask.GetMask("Commander", "Knight");
 
+        // GameManager의 CheckTargetCellBlocked 사용
         bool canForward = !GameManager.Instance.CheckTargetCellBlocked(currentCell + forwardDir, unitLayerMask);
         bool canBackward = !GameManager.Instance.CheckTargetCellBlocked(currentCell - forwardDir, unitLayerMask);
 
         currentPanelScript.SetButtons(canForward, canBackward);
-    }
-
-    // --- UI 유지 여부 확인 (행동 후 호출) ---
-    public void HandlePostActionUI(GameObject unit)
-    {
-        if (unit == null) return;
-
-        string layerName = LayerMask.LayerToName(unit.layer);
-        var target = layerUIList.Find(x => x.layerName == layerName && x.teamTag == unit.tag);
-
-        if (target.hideAfterAction)
-        {
-            CloseAllUI();
-        }
-        else
-        {
-            if (currentActiveUI != null)
-            {
-                currentActiveUI.transform.localRotation = Quaternion.identity;
-                currentActiveUI.SetActive(true);
-                RefreshNavigationButtons(unit);
-            }
-        }
     }
 
     public void CloseAllUI()
@@ -103,5 +76,57 @@ public class UIManager : MonoBehaviour
         }
         currentActiveUI = null;
         currentPanelScript = null;
+    }
+
+    // --- 버튼 이벤트 ---
+
+    // 1. 이동 버튼 (전진)
+    public void OnMoveButtonClick()
+    {
+        GameObject selected = GameManager.Instance.selectedObject;
+        if (selected == null) return;
+
+        // [AP 소모] 이동 비용 1
+        if (AP_Counter_Manager.Instance.ConsumeAP(selected.tag, 1))
+        {
+            // [해결] 이제 GameManager에 MoveUnitForward가 존재하므로 오류가 사라집니다.
+            GameManager.Instance.MoveUnitForward(); 
+            
+            // 행동 후 UI 갱신 여부 처리 (GameManager가 코루틴 종료 후 호출하기도 하지만, 즉시 반응을 위해)
+            // 주의: 실제 물리 이동은 코루틴에서 일어나므로 UI 갱신은 코루틴 끝난 후가 정확할 수 있습니다.
+            // 여기서는 CloseAllUI 조건 체크를 위해 남겨둡니다.
+            HandlePostActionUI(selected);
+        }
+    }
+
+    // 2. 후퇴 버튼 (예시 추가)
+    public void OnBackwardButtonClick()
+    {
+        GameObject selected = GameManager.Instance.selectedObject;
+        if (selected == null) return;
+
+        // [AP 소모] 후퇴 비용 2 (예시)
+        if (AP_Counter_Manager.Instance.ConsumeAP(selected.tag, 2))
+        {
+            GameManager.Instance.MoveUnitBackward(); // GameManager에 추가된 함수
+            HandlePostActionUI(selected);
+        }
+    }
+
+    public void HandlePostActionUI(GameObject unit)
+    {
+        if (unit == null) return;
+        string layerName = LayerMask.LayerToName(unit.layer);
+        var target = layerUIList.Find(x => x.layerName == layerName && x.teamTag == unit.tag);
+
+        if (target.hideAfterAction)
+        {
+            CloseAllUI();
+        }
+        else
+        {
+            // 이동 후 버튼 상태 갱신은 유닛이 실제로 이동을 마친 뒤(GameManager 코루틴 끝)에 하는 것이 가장 정확합니다.
+            // GameManager에서 HandlePostActionUI를 호출해주므로 여기서는 비워두거나 안전장치로 둡니다.
+        }
     }
 }
