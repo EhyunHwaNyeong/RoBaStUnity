@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 4562377638301895581}
   - component: {fileID: 8399151588046402047}
   - component: {fileID: 8144998404925241774}
+  - component: {fileID: -1602417300984826064}
   m_Layer: 6
   m_Name: Black_Knight
   m_TagString: Black
@@ -237,6 +238,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
   deathCount: 0
   isDead: 0
+--- !u!114 &-1602417300984826064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937213947243460896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fef9cefe0218fa44c9da19814a9040f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitUIPanel
+  forwardButton: {fileID: 0}
+  backwardButton: {fileID: 0}
 --- !u!1 &2333750373423374161
 GameObject:
   m_ObjectHideFlags: 0

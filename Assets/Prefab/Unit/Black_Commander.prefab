@@ -247,6 +247,7 @@ GameObject:
   - component: {fileID: 3581599987761902800}
   - component: {fileID: 6856829766701275785}
   - component: {fileID: -7850385217474040362}
+  - component: {fileID: -4027213218340739893}
   m_Layer: 7
   m_Name: Black_Commander
   m_TagString: Black
@@ -393,3 +394,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
   deathCount: 0
   isDead: 0
+--- !u!114 &-4027213218340739893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7033353852552468334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fef9cefe0218fa44c9da19814a9040f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitUIPanel
+  forwardButton: {fileID: 0}
+  backwardButton: {fileID: 0}

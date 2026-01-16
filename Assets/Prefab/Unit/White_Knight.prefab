@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 2118706850839773886}
   - component: {fileID: 1461201007226636323}
   - component: {fileID: -1825687761003748466}
+  - component: {fileID: 5863502732296616682}
   m_Layer: 6
   m_Name: White_Knight
   m_TagString: White
@@ -315,6 +316,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
   deathCount: 0
   isDead: 0
+--- !u!114 &5863502732296616682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4628189151786687858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fef9cefe0218fa44c9da19814a9040f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitUIPanel
+  forwardButton: {fileID: 0}
+  backwardButton: {fileID: 0}
 --- !u!1 &6968968782767567378
 GameObject:
   m_ObjectHideFlags: 0

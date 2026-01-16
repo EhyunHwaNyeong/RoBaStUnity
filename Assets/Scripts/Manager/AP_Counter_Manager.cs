@@ -32,20 +32,22 @@ public class AP_Counter_Manager : MonoBehaviour
 
         blackCurrentAP = maxAP;
         whiteCurrentAP = maxAP;
+        
+        // 시작하자마자 UI 한번 갱신
         UpdateAllUI();
     }
 
-    // [핵심] 태그에 맞는 AP 패널만 띄워주는 기능
+    // [수정됨] 패널을 켤 때 텍스트도 확실하게 갱신하여 깜빡임/사라짐 방지
     public void ShowTeamPanel(string tag)
     {
-        // 일단 모든 AP 패널을 숨김 (필요한 경우에만)
-        // whiteTeamUI.apPanel.SetActive(false);
-        // blackTeamUI.apPanel.SetActive(false);
-
+        // 1. 필요한 패널 켜기
         if (tag == "White" && whiteTeamUI.apPanel != null)
             whiteTeamUI.apPanel.SetActive(true);
         else if (tag == "Black" && blackTeamUI.apPanel != null)
             blackTeamUI.apPanel.SetActive(true);
+
+        // 2. [중요] 패널을 켠 직후 텍스트 값을 즉시 갱신 (빈 텍스트 방지)
+        UpdateAllUI();
     }
 
     public bool ConsumeAP(string tag, int amount)
@@ -63,7 +65,8 @@ public class AP_Counter_Manager : MonoBehaviour
         if (hasEnough)
         {
             UpdateAllUI();
-            ShowTeamPanel(tag); // 소모한 팀의 UI를 다시 확인해서 띄움
+            // AP 소모 후에도 패널이 꺼지지 않도록 확실하게 다시 호출
+            ShowTeamPanel(tag); 
         }
         return hasEnough;
     }
@@ -76,11 +79,11 @@ public class AP_Counter_Manager : MonoBehaviour
             blackTeamUI.apText.text = $"({blackCurrentAP} / {maxAP})";
     }
 
-    // 회복 버튼 등에서 호출
     public void RestoreTeamAP(string teamTag)
     {
         if (teamTag == "Black") blackCurrentAP = Mathf.Min(blackCurrentAP + restoreAmount, maxAP);
         else if (teamTag == "White") whiteCurrentAP = Mathf.Min(whiteCurrentAP + restoreAmount, maxAP);
+        
         UpdateAllUI();
         ShowTeamPanel(teamTag);
     }

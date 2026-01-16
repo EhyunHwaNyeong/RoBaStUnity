@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 4766271667560747754}
   - component: {fileID: 4796049199015523536}
   - component: {fileID: 6086072268767692528}
+  - component: {fileID: 9035513238120502592}
   m_Layer: 7
   m_Name: Whtie_Commander
   m_TagString: White
@@ -315,6 +316,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
   deathCount: 0
   isDead: 0
+--- !u!114 &9035513238120502592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7700098525461851809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fef9cefe0218fa44c9da19814a9040f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitUIPanel
+  forwardButton: {fileID: 0}
+  backwardButton: {fileID: 0}
 --- !u!1 &7765847901694487253
 GameObject:
   m_ObjectHideFlags: 0
