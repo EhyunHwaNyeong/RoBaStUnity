@@ -65,50 +65,54 @@ public class GameManager : MonoBehaviour
     {
         if (selectedObject == null) yield break;
 
-        // 이동 전 유닛 태그 저장 (턴 체크용)
-        string unitTag = selectedObject.tag;
+        // 1. [핵심] 유닛이 사라지기 전에 미리 필요한 정보를 변수에 저장해둡니다.
+        string unitTag = selectedObject.tag; 
+        GameObject unitRef = selectedObject; // 참조 저장
 
-        Vector3Int currentCell = targetTilemap.WorldToCell(selectedObject.transform.position);
-        Vector3Int forwardDir = Vector3Int.RoundToInt(selectedObject.transform.up);
+        Vector3Int currentCell = targetTilemap.WorldToCell(unitRef.transform.position);
+        Vector3Int forwardDir = Vector3Int.RoundToInt(unitRef.transform.up);
 
+        // 이동 처리
         switch (action)
         {
-            case "Up": selectedObject.transform.position = targetTilemap.GetCellCenterWorld(currentCell + forwardDir); break;
-            case "Down": selectedObject.transform.position = targetTilemap.GetCellCenterWorld(currentCell - forwardDir); break;
-            case "Left": selectedObject.transform.Rotate(0, 0, 90f); break;
-            case "Right": selectedObject.transform.Rotate(0, 0, -90f); break;
+            case "Up": unitRef.transform.position = targetTilemap.GetCellCenterWorld(currentCell + forwardDir); break;
+            case "Down": unitRef.transform.position = targetTilemap.GetCellCenterWorld(currentCell - forwardDir); break;
+            case "Left": unitRef.transform.Rotate(0, 0, 90f); break;
+            case "Right": unitRef.transform.Rotate(0, 0, -90f); break;
         }
 
-        // 2. 물리 동기화 및 대기
         Physics2D.SyncTransforms();
         yield return new WaitForFixedUpdate();
 
-        // 3. 사망 규칙 체크
-        if (KillManager.Instance != null)
+        // 2. 사망 규칙 체크 (여기서 unitRef가 Destroy될 수 있음)
+        if (KillManager.Instance != null && unitRef != null)
         {
-            KillManager.Instance.CheckAndApplyDeathRules(selectedObject);
+            KillManager.Instance.CheckAndApplyDeathRules(unitRef);
         }
 
-        // 4. 연출 종료 후 처리
-        // 유닛이 파괴되었을 수도 있으므로 null 체크
-        if (selectedObject != null && selectedObject.activeInHierarchy)
+        // 3. [수정] 유닛 존재 여부를 먼저 꼼꼼히 체크
+        bool isUnitAlive = (unitRef != null && unitRef.activeInHierarchy);
+        bool isAPEmpty = AP_Counter_Manager.Instance.IsAPEmpty(unitTag);
+
+        if (isUnitAlive)
         {
-            // AP가 없으면 턴 넘김
-            if (CheckIfAPEmpty(unitTag))
+            if (isAPEmpty)
             {
-                 Debug.Log($"{unitTag}팀 AP 소진. 턴 종료.");
-                 TurnManager.Instance.SwitchTurn();
+                Debug.Log($"{unitTag}팀 AP 소진. 턴을 넘깁니다.");
+                TurnManager.Instance.SwitchTurn();
             }
             else 
             {
-                // AP가 남았으면 UI 갱신 (이동 후 위치 기반 버튼 활성/비활성)
-                UIManager.Instance.HandlePostActionUI(selectedObject);
+                // 살아있고 AP가 남았다면 UI 다시 표시
+                UIManager.Instance.HandlePostActionUI(unitRef);
             }
         }
         else
         {
-            // 유닛이 죽어서 사라진 경우에도 AP 체크하여 턴 넘김
-            if (CheckIfAPEmpty(unitTag))
+            // 유닛이 죽어서 사라진 경우
+            Debug.Log($"{unitTag}팀의 유닛이 파괴됨.");
+            // 유닛이 죽었더라도 AP가 0이면 턴을 넘겨야 시스템이 멈추지 않습니다.
+            if (isAPEmpty)
             {
                 TurnManager.Instance.SwitchTurn();
             }
@@ -116,14 +120,14 @@ public class GameManager : MonoBehaviour
     }
 
     // AP Empty 체크 헬퍼 함수
-    private bool CheckIfAPEmpty(string tag)
-    {
-        if (AP_Counter_Manager.Instance != null)
-        {
-            return AP_Counter_Manager.Instance.IsAPEmpty(tag);
-        }
-        return false;
-    }
+    // private bool CheckIfAPEmpty(string tag)
+    // {
+    //     if (AP_Counter_Manager.Instance != null)
+    //     {
+    //         return AP_Counter_Manager.Instance.IsAPEmpty(tag);
+    //     }
+    //     return false;
+    // }
 
     public bool CheckTargetCellBlocked(Vector3Int cellPos, int layerMask)
     {
