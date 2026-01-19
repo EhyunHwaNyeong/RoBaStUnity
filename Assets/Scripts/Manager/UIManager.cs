@@ -3,53 +3,71 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance;
+    public static UIManager Instance { get; private set; }
 
-    [System.Serializable]
-    public struct LayerUI
-    {
-        public string teamTag;       
-        public string layerName;     
-        public GameObject uiPanel;    
-        public bool hideAfterAction;  
-    }
-
-    [Header("레이어 및 팀별 UI 설정")]
-    public List<LayerUI> layerUIList;
-
+    [Header("공통 유닛 UI 설정")]
+    [Tooltip("모든 유닛이 공통으로 사용할 UI 패널 프리팹 또는 오브젝트")]
+    public GameObject commonUnitUIPanel; 
+    
     [Header("설정")]
     public Vector3 uiOffset = new Vector3(0, 1.2f, 0);
 
     private GameObject currentActiveUI;
     private UnitUIPanel currentPanelScript;
+    private GameObject currentTargetUnit; 
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null) { Instance = this; }
+        else { Destroy(gameObject); return; }
         
+        // 시작 시 공통 UI가 씬에 배치되어 있다면 비활성화
+        if (commonUnitUIPanel != null) commonUnitUIPanel.SetActive(false);
         CloseAllUI();
     }
 
     public void ShowUnitUI(GameObject unit)
     {
+        if (commonUnitUIPanel == null) return;
+
         CloseAllUI();
+        currentTargetUnit = unit;
+        currentActiveUI = commonUnitUIPanel;
 
-        string layerName = LayerMask.LayerToName(unit.layer);
-        var target = layerUIList.Find(x => x.layerName == layerName && x.teamTag == unit.tag);
+        currentActiveUI.SetActive(true);
+        currentActiveUI.transform.SetParent(unit.transform);
+        
+        // 1. 위치 설정
+        currentActiveUI.transform.localPosition = uiOffset;
 
-        if (target.uiPanel != null)
+        // 2. [수정] 부모(유닛)의 회전값을 그대로 따르도록 함
+        // World rotation을 0으로 만드는 대신, 부모에 대한 상대 회전을 0으로 만듭니다.
+        currentActiveUI.transform.localRotation = Quaternion.identity;
+
+        // 3. 스케일 보정
+        Vector3 parentScale = unit.transform.localScale;
+        currentActiveUI.transform.localScale = new Vector3(
+            1f / Mathf.Abs(parentScale.x), 
+            1f / Mathf.Abs(parentScale.y), 
+            1f
+        );
+
+        currentPanelScript = currentActiveUI.GetComponent<UnitUIPanel>();
+        RefreshNavigationButtons(unit);
+    }
+
+    public void CloseAllUI()
+    {
+        if (currentActiveUI != null)
         {
-            currentActiveUI = target.uiPanel;
-            currentActiveUI.transform.SetParent(unit.transform);
-            currentActiveUI.transform.localPosition = uiOffset;
-            currentActiveUI.transform.localRotation = Quaternion.identity;
-            currentActiveUI.SetActive(true);
-
-            currentPanelScript = currentActiveUI.GetComponent<UnitUIPanel>();
-            
-            RefreshNavigationButtons(unit);
+            currentActiveUI.SetActive(false);
+            currentActiveUI.transform.SetParent(null); // 부모 관계 해제
+            currentActiveUI.transform.localScale = Vector3.one; 
         }
+
+        currentActiveUI = null;
+        currentPanelScript = null;
+        currentTargetUnit = null; 
     }
 
     public void RefreshNavigationButtons(GameObject unit)
@@ -58,75 +76,77 @@ public class UIManager : MonoBehaviour
 
         Vector3Int currentCell = GameManager.Instance.targetTilemap.WorldToCell(unit.transform.position);
         Vector3Int forwardDir = Vector3Int.RoundToInt(unit.transform.up);
-        int unitLayerMask = LayerMask.GetMask("Commander", "Knight");
+        
+        Vector3Int targetForwardCell = currentCell + forwardDir;
+        Vector3Int targetBackwardCell = currentCell - forwardDir;
 
-        // GameManager의 CheckTargetCellBlocked 사용
-        bool canForward = !GameManager.Instance.CheckTargetCellBlocked(currentCell + forwardDir, unitLayerMask);
-        bool canBackward = !GameManager.Instance.CheckTargetCellBlocked(currentCell - forwardDir, unitLayerMask);
+        int obstacleMask = LayerMask.GetMask("Commander", "Knight");
 
-        currentPanelScript.SetButtons(canForward, canBackward);
-    }
+        bool hasForwardTile = GameManager.Instance.targetTilemap.HasTile(targetForwardCell);
+        bool canForward = hasForwardTile && !GameManager.Instance.CheckTargetCellBlocked(targetForwardCell, obstacleMask);
 
-    public void CloseAllUI()
-    {
-        if (currentActiveUI != null)
-        {
-            currentActiveUI.SetActive(false);
-            currentActiveUI.transform.SetParent(null);
-        }
-        currentActiveUI = null;
-        currentPanelScript = null;
-    }
+        bool hasBackwardTile = GameManager.Instance.targetTilemap.HasTile(targetBackwardCell);
+        bool canBackward = hasBackwardTile && !GameManager.Instance.CheckTargetCellBlocked(targetBackwardCell, obstacleMask);
 
-    // --- 버튼 이벤트 ---
-
-    // 1. 이동 버튼 (전진)
-    public void OnMoveButtonClick()
-    {
-        GameObject selected = GameManager.Instance.selectedObject;
-        if (selected == null) return;
-
-        // [AP 소모] 이동 비용 1
-        if (AP_Counter_Manager.Instance.ConsumeAP(selected.tag, 1))
-        {
-            // [해결] 이제 GameManager에 MoveUnitForward가 존재하므로 오류가 사라집니다.
-            GameManager.Instance.MoveUnitForward(); 
-            
-            // 행동 후 UI 갱신 여부 처리 (GameManager가 코루틴 종료 후 호출하기도 하지만, 즉시 반응을 위해)
-            // 주의: 실제 물리 이동은 코루틴에서 일어나므로 UI 갱신은 코루틴 끝난 후가 정확할 수 있습니다.
-            // 여기서는 CloseAllUI 조건 체크를 위해 남겨둡니다.
-            HandlePostActionUI(selected);
-        }
-    }
-
-    // 2. 후퇴 버튼 (예시 추가)
-    public void OnBackwardButtonClick()
-    {
-        GameObject selected = GameManager.Instance.selectedObject;
-        if (selected == null) return;
-
-        // [AP 소모] 후퇴 비용 2 (예시)
-        if (AP_Counter_Manager.Instance.ConsumeAP(selected.tag, 2))
-        {
-            GameManager.Instance.MoveUnitBackward(); // GameManager에 추가된 함수
-            HandlePostActionUI(selected);
-        }
+        // 공통 UI의 버튼 활성/비활성 설정
+        currentPanelScript.SetNavigationButtons(canForward, canBackward, true, true);
     }
 
     public void HandlePostActionUI(GameObject unit)
     {
         if (unit == null) return;
-        string layerName = LayerMask.LayerToName(unit.layer);
-        var target = layerUIList.Find(x => x.layerName == layerName && x.teamTag == unit.tag);
+        UnitData data = unit.GetComponent<UnitData>();
 
-        if (target.hideAfterAction)
+        // 공통 UI를 사용하므로 특정 팀/레이어 구분 없이 UnitData의 상태에 따라 처리
+        // 만약 모든 유닛이 한 번 움직이고 끝난다면 아래 로직 유지
+        if (data != null)
         {
+            // 이동 후 행동이 끝난 유닛이라면 UI 닫기
+            // (이 로직은 게임 규칙에 따라 수정 가능합니다)
+            data.SetMovementState(true); 
             CloseAllUI();
         }
-        else
+    }
+
+    // --- 버튼 이벤트 함수들 ---
+
+    public void OnMoveButtonClick()
+    {
+        if (currentTargetUnit == null) return;
+        
+        if (AP_Counter_Manager.Instance.ConsumeAP(currentTargetUnit.tag, 1))
         {
-            // 이동 후 버튼 상태 갱신은 유닛이 실제로 이동을 마친 뒤(GameManager 코루틴 끝)에 하는 것이 가장 정확합니다.
-            // GameManager에서 HandlePostActionUI를 호출해주므로 여기서는 비워두거나 안전장치로 둡니다.
+            GameManager.Instance.selectedObject = currentTargetUnit; 
+            GameManager.Instance.MoveUnitForward();
+        }
+    }
+
+    public void OnBackwardButtonClick()
+    {
+        if (currentTargetUnit == null) return;
+        
+        if (AP_Counter_Manager.Instance.ConsumeAP(currentTargetUnit.tag, 2))
+        {
+            GameManager.Instance.selectedObject = currentTargetUnit;
+            GameManager.Instance.MoveUnitBackward();
+        }
+    }
+    public void OnLeftRotateClick()
+    {
+        if (currentTargetUnit == null) return;
+        // 회전 비용을 1 AP라고 가정
+        if (AP_Counter_Manager.Instance.ConsumeAP(currentTargetUnit.tag, 1))
+        {
+            GameManager.Instance.RotateUnit(90f); // 왼쪽 90도
+        }
+    }
+
+    public void OnRightRotateClick()
+    {
+        if (currentTargetUnit == null) return;
+        if (AP_Counter_Manager.Instance.ConsumeAP(currentTargetUnit.tag, 1))
+        {
+            GameManager.Instance.RotateUnit(-90f); // 오른쪽 90도
         }
     }
 }

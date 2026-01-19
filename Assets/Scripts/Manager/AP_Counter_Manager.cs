@@ -65,29 +65,27 @@ public class AP_Counter_Manager : MonoBehaviour
 
         if (tag == "Black")
         {
-            if (blackCurrentAP >= amount) 
-            { 
-                blackCurrentAP -= amount; 
-                hasEnough = true; 
-            }
+            if (blackCurrentAP >= amount) { blackCurrentAP -= amount; hasEnough = true; }
         }
         else if (tag == "White")
         {
-            if (whiteCurrentAP >= amount) 
-            { 
-                whiteCurrentAP -= amount; 
-                hasEnough = true; 
-            }
+            if (whiteCurrentAP >= amount) { whiteCurrentAP -= amount; hasEnough = true; }
         }
         
-        if (hasEnough)
-        {
-            UpdateAllUI(); // 소모 즉시 갱신
-        }
+        if (hasEnough) UpdateAllUI();
         
         return hasEnough;
     }
 
+    // 턴을 넘겨야 하는지 확인만 하는 함수 (자동 호출 X)
+    public void CheckAndSwitchTurn(string tag)
+    {
+        if (IsAPEmpty(tag))
+        {
+            Debug.Log($"<color=yellow>{tag} 팀 AP 소진. 이동 완료 후 턴을 전환합니다.</color>");
+            TurnManager.Instance.SwitchTurn();
+        }
+    }
     // TurnManager에서 호출
     public void RestoreTeamAP(string teamTag)
     {
@@ -99,6 +97,7 @@ public class AP_Counter_Manager : MonoBehaviour
             whiteCurrentAP = Mathf.Min(whiteCurrentAP + restoreAmount, maxAP);
         
         UpdateAllUI();
+        Debug.Log($"{teamTag} 팀 AP {restoreAmount}로 회복됨.");
     }
 
     // 호환성 유지용 (내용은 UpdateAllUI와 동일)
