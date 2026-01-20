@@ -3,6 +3,7 @@ using UnityEngine;
 public class UnitData : MonoBehaviour
 {
     public bool hasMovedThisTurn = false;
+    public bool canMoveMultipleTimes = false;
     public bool isDead = false;
     public int deathCount = 0;
     
@@ -23,7 +24,14 @@ public class UnitData : MonoBehaviour
     // [해결] UIManager.cs(112,40) 에러 해결
     public void SetMovementState(bool moved)
     {
-        hasMovedThisTurn = moved;
+        if (canMoveMultipleTimes)
+        {
+            hasMovedThisTurn = false;
+        }
+        else
+        {
+            hasMovedThisTurn = moved;
+        }
     }
 
     // [해결] GameManager에서 유닛 선택 시 시각 효과용

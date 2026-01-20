@@ -186,7 +186,9 @@ public class GameManager : MonoBehaviour
             
             // 회전 후 이동 버튼 상태 갱신
             if (UIManager.Instance != null)
-                UIManager.Instance.RefreshNavigationButtons(unitRef);
+            {
+                UIManager.Instance.HandlePostActionUI(unitRef);
+            }
                 
             // [중요] 회전 애니메이션이 끝난 후 AP가 0인지 확인하여 턴을 넘깁니다.
             if (AP_Counter_Manager.Instance != null)

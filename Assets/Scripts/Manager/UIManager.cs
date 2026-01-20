@@ -104,7 +104,17 @@ public class UIManager : MonoBehaviour
             // 이동 후 행동이 끝난 유닛이라면 UI 닫기
             // (이 로직은 게임 규칙에 따라 수정 가능합니다)
             data.SetMovementState(true); 
-            CloseAllUI();
+            if (!data.hasMovedThisTurn)
+            {
+                RefreshNavigationButtons(unit);
+                // AP가 모자라다면 어차피 버튼 클릭 시 AP 체크에서 걸러집니다.
+            }
+            else
+            {
+                // 다시 움직일 수 없는 일반 유닛이라면 UI를 닫고 선택 해제
+                CloseAllUI();
+                GameManager.Instance.DeselectObject();
+            }
         }
     }
 

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8295371157423550461}
   - component: {fileID: 7305153864600221719}
   - component: {fileID: 4766271667560747754}
-  - component: {fileID: 4796049199015523536}
   - component: {fileID: 6086072268767692528}
+  - component: {fileID: -4804699273976703158}
   m_Layer: 7
   m_Name: Whtie_Commander
   m_TagString: White
@@ -130,18 +130,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: -0.06859905}
   m_Radius: 2.3922
---- !u!114 &4796049199015523536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7700098525461851809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d39117aba78795b49b93438ff7c0b953, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Unit_UI
 --- !u!114 &6086072268767692528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,7 +142,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d80c77861e7d64bad0fa75a6a7ead5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  deathCount: 0
+  hasMovedThisTurn: 0
+  canMoveMultipleTimes: 1
   isDead: 0
-  isCurrentlyWatched: 0
-  _hasMovedThisTurn: 0
+  deathCount: 0
+--- !u!114 &-4804699273976703158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7700098525461851809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d39117aba78795b49b93438ff7c0b953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit_UI
