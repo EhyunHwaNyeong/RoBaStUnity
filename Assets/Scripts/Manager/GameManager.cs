@@ -154,9 +154,14 @@ public class GameManager : MonoBehaviour
         if (UIManager.Instance != null && unitRef != null)
             UIManager.Instance.HandlePostActionUI(unitRef);
 
-        if (AP_Counter_Manager.Instance != null)
+        if (AP_Counter_Manager.Instance != null && AP_Counter_Manager.Instance.IsAPEmpty(unitTag))
         {
-            AP_Counter_Manager.Instance.CheckAndSwitchTurn(unitTag);
+            // 이미 TurnManager가 전환 중이 아닐 때만 전환 명령을 내림
+            if (!TurnManager.Instance.isSwitchingTurn)
+            {
+                Debug.Log($"<color=yellow>{unitTag} 팀 AP 소진으로 인한 자동 턴 전환.</color>");
+                TurnManager.Instance.SwitchTurn();
+            }
         }
     }
     private IEnumerator ProcessRotateSequence(float angle)
@@ -191,9 +196,14 @@ public class GameManager : MonoBehaviour
             }
                 
             // [중요] 회전 애니메이션이 끝난 후 AP가 0인지 확인하여 턴을 넘깁니다.
-            if (AP_Counter_Manager.Instance != null)
+            if (AP_Counter_Manager.Instance != null && AP_Counter_Manager.Instance.IsAPEmpty(unitTag))
             {
-                AP_Counter_Manager.Instance.CheckAndSwitchTurn(unitTag);
+                // 이미 TurnManager가 전환 중이 아닐 때만 전환 명령을 내림
+                if (!TurnManager.Instance.isSwitchingTurn)
+                {
+                    Debug.Log($"<color=yellow>{unitTag} 팀 AP 소진으로 인한 자동 턴 전환.</color>");
+                    TurnManager.Instance.SwitchTurn();
+                }
             }
         }
 

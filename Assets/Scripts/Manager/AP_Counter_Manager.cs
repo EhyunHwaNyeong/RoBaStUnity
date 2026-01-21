@@ -4,6 +4,9 @@ using TMPro;
 public class AP_Counter_Manager : MonoBehaviour
 {
     public static AP_Counter_Manager Instance;
+    
+    private bool hasRestoredInThisSequence = false;
+    private float lastRestoreTime = 0f;
 
     [System.Serializable]
     public struct TeamAPUI
@@ -83,22 +86,44 @@ public class AP_Counter_Manager : MonoBehaviour
         if (IsAPEmpty(tag))
         {
             Debug.Log($"<color=yellow>{tag} 팀 AP 소진. 이동 완료 후 턴을 전환합니다.</color>");
-            TurnManager.Instance.SwitchTurn();
         }
     }
+    // private string lastRestoredTeam = ""; // 마지막으로 회복시킨 팀 저장
     // TurnManager에서 호출
     public void RestoreTeamAP(string teamTag)
     {
-        // 턴 시작 시 AP 회복 (최대치로 리셋 or 누적)
-        // 요구사항: "회복되게 하고 싶어" -> 보통 최대치로 리셋 혹은 +restoreAmount
-        if (teamTag == "Black") 
+        // 동일 프레임 혹은 연속으로 같은 팀이 회복되는 것 방지 (안전 장치)
+        if (hasRestoredInThisSequence || (Time.time - lastRestoreTime < 0.5f))
+        {
+            return; 
+        }
+        // 현재 AP에 restoreAmount만큼 더하되, maxAP를 초과하지 않음
+        if (teamTag == "Black")
+        {
             blackCurrentAP = Mathf.Min(blackCurrentAP + restoreAmount, maxAP);
-        else if (teamTag == "White") 
+        }
+        else if (teamTag == "White")
+        {
             whiteCurrentAP = Mathf.Min(whiteCurrentAP + restoreAmount, maxAP);
+        }
+
+        // 상태 기록
+        hasRestoredInThisSequence = true;
+        lastRestoreTime = Time.time;
         
         UpdateAllUI();
-        Debug.Log($"{teamTag} 팀 AP {restoreAmount}로 회복됨.");
+        
+        // 로그를 "현재 AP"가 얼마인지 정확히 찍히도록 수정하여 중복 확인을 용이하게 함
+        Debug.Log($"<color=green>▶ [실제 회복] {teamTag} 팀 AP {restoreAmount} 회복. (현재: {GetTeamAP(teamTag)}/{maxAP})</color>");
     }
+
+    public void ResetRestoreFlag()
+    {
+        hasRestoredInThisSequence = false;
+    }
+
+    // 현재 AP를 반환하는 보조 함수 (로그용)
+    private int GetTeamAP(string tag) => (tag == "Black") ? blackCurrentAP : whiteCurrentAP;
 
     // 호환성 유지용 (내용은 UpdateAllUI와 동일)
     public void ShowTeamPanel(string tag)

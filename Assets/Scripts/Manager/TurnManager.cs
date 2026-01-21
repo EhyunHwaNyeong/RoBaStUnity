@@ -1,12 +1,16 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
-
+    public bool isSwitchingTurn = false; // 중복 방지 플래그
     [Header("현재 턴 정보")]
     public string currentTurnTag = "Black"; // 시작 팀 설정
+
+    private float lastClickTime = 0f;
+    
 
     void Awake()
     {
@@ -18,14 +22,17 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         // 게임 시작 시 첫 턴 데이터 적용 (AP 회복 등)
-        ApplyTurnStart(currentTurnTag);
+        // ApplyTurnStart(currentTurnTag);
     }
 
     // [핵심] 턴 종료 버튼에 이 함수를 연결하세요
     public void OnTurnEndButtonClick(string requesterTag)
     {
+        // 클릭 간격을 0.5초로 제한 (연타 방지)
+        if (Time.time - lastClickTime < 0.5f) return;
+        lastClickTime = Time.time;
         // 현재 턴인 팀이 누른 것이 아니라면 무시
-        if (currentTurnTag != requesterTag)
+        if (currentTurnTag != requesterTag || isSwitchingTurn)
         {
             Debug.LogWarning($"<color=red>거부:</color> 현재는 {currentTurnTag}의 턴입니다. ({requesterTag} 버튼 눌림)");
             return;
@@ -37,28 +44,39 @@ public class TurnManager : MonoBehaviour
 
     public void SwitchTurn()
     {
-        Debug.Log($"<color=orange>현재 턴 종료 시도: {currentTurnTag}</color>");
+        // 1. 이미 전환 중이면 즉시 차단
+        if (isSwitchingTurn) return;
+        
+        StartCoroutine(SafeSwitchTurnRoutine());
+    }
 
-        // 1. 기존 유닛 선택 해제 및 UI 닫기
+    private IEnumerator SafeSwitchTurnRoutine()
+    {
+        isSwitchingTurn = true; 
+
+        if (AP_Counter_Manager.Instance != null) 
+            AP_Counter_Manager.Instance.ResetRestoreFlag();
+
+        // 1. 현재(이전) 팀의 선택 해제 및 UI 닫기 (태그 바꾸기 전에 수행)
         if (GameManager.Instance != null) GameManager.Instance.DeselectObject();
         if (UIManager.Instance != null) UIManager.Instance.CloseAllUI();
 
-        // 2. 사망 규칙 체크 (예외 처리 추가)
-        try {
-            if (KillManager.Instance != null)
-                KillManager.Instance.CheckTurnEndDeath(currentTurnTag);
-        } catch (System.Exception e) {
-            Debug.LogError("KillManager 체크 중 에러 발생: " + e.Message);
-        }
+        Debug.Log($"<color=orange>턴 전환 프로세스 시작 (현재: {currentTurnTag})</color>");
 
-        // 3. 팀 태그 교체 (명확하게 삼항 연산자 사용)
-        string nextTurnTag = (currentTurnTag == "Black") ? "White" : "Black";
-        currentTurnTag = nextTurnTag;
+        // 2. 팀 태그 교체 (여기서 실제 턴이 넘어감)
+        currentTurnTag = (currentTurnTag == "Black") ? "White" : "Black";
 
-        Debug.Log($"<color=cyan>턴 변경 완료! 이제부터 [ {currentTurnTag} ] 의 턴입니다.</color>");
-
-        // 4. 새로운 팀 상태 초기화
+        // 3. 새로운 팀에게만 회복 및 상태 리셋 적용
         ApplyTurnStart(currentTurnTag);
+        
+        // Debug.Log($"<color=cyan>턴 변경 완료! 현재 턴: [ {currentTurnTag} ]</color>");
+
+        // 4. 동일 프레임 내 중복 호출을 완전히 무시하기 위한 대기 시간
+        // 이 시간 동안은 SwitchTurn()이 호출되어도 상단 if(isSwitchingTurn)에 의해 차단됨
+        yield return new WaitForSecondsRealtime(0.3f); 
+        
+        isSwitchingTurn = false;
+        Debug.Log($"<color=cyan>턴 전환 시스템 안정화 완료</color>");
     }
 
     private void ApplyTurnStart(string teamTag)
