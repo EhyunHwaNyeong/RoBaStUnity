@@ -144,7 +144,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
   hasMovedThisTurn: 0
   canMoveMultipleTimes: 0
-  isDead: 0
   _deathCount: 0
 --- !u!114 &-7389467184632097317
 MonoBehaviour:

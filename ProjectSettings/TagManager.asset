@@ -45,6 +45,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Unit
+    uniqueID: 786066079
+    locked: 0
+  - name: Unit UI
+    uniqueID: 501847021
+    locked: 0
+  - name: filed
+    uniqueID: 481460339
+    locked: 0
   m_RenderingLayers:
   - Default
   - Background
