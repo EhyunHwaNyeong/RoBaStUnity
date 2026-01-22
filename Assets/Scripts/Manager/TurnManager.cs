@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI; // Image 컴포넌트 사용을 위해 추가
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,8 +7,16 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
     public bool isSwitchingTurn = false; // 중복 방지 플래그
+
     [Header("현재 턴 정보")]
     public string currentTurnTag = "Black"; // 시작 팀 설정
+
+    [Header("턴 종료 버튼 UI 설정")]
+    public Image blackTurnButtonImage; // 블랙 팀 턴 종료 버튼의 Image 컴포넌트
+    public Image whiteTurnButtonImage; // 화이트 팀 턴 종료 버튼의 Image 컴포넌트
+    
+    public Sprite activeSprite;   // 자신의 턴일 때 표시할 이미지
+    public Sprite inactiveSprite; // 자신의 턴이 아닐 때 표시할 이미지
 
     private float lastClickTime = 0f;
     
@@ -23,6 +32,21 @@ public class TurnManager : MonoBehaviour
     {
         // 게임 시작 시 첫 턴 데이터 적용 (AP 회복 등)
         // ApplyTurnStart(currentTurnTag);
+        UpdateAllButtonVisuals();
+    }
+
+    // 버튼의 이미지를 현재 턴 상태에 따라 갱신하는 함수
+    private void UpdateAllButtonVisuals()
+    {
+        if (blackTurnButtonImage != null)
+        {
+            blackTurnButtonImage.sprite = (currentTurnTag == "Black") ? activeSprite : inactiveSprite;
+        }
+
+        if (whiteTurnButtonImage != null)
+        {
+            whiteTurnButtonImage.sprite = (currentTurnTag == "White") ? activeSprite : inactiveSprite;
+        }
     }
 
     // [핵심] 턴 종료 버튼에 이 함수를 연결하세요
@@ -67,6 +91,9 @@ public class TurnManager : MonoBehaviour
 
         // 2. 팀 태그 교체 (여기서 실제 턴이 넘어감)
         currentTurnTag = (currentTurnTag == "Black") ? "White" : "Black";
+        
+        // 2. [추가] 턴이 바뀌었으므로 버튼 이미지 즉시 갱신
+        UpdateAllButtonVisuals();
 
         // 3. 새로운 팀에게만 회복 및 상태 리셋 적용
         ApplyTurnStart(currentTurnTag);

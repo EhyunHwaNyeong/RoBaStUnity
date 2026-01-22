@@ -1642,10 +1642,8 @@ MonoBehaviour:
   deathUnitArea: {fileID: 0}
   teamSettings:
   - teamTag: White
-    killButton: {fileID: 1399059464}
     deathArea: {fileID: 1981044645}
   - teamTag: Black
-    killButton: {fileID: 1315465793}
     deathArea: {fileID: 1592218889}
 --- !u!1 &1315465793
 GameObject:
@@ -1774,7 +1772,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6621053453934379125, guid: 24d155eb015b3f5458bd42399ca9f5cf, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2015,7 +2013,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c3305ca73f225e542b8864bdb38faac2, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3284,7 +3282,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c7fa4c19d46794783b776c70b2ab06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
+  isSwitchingTurn: 0
   currentTurnTag: Black
+  blackTurnButtonImage: {fileID: 1399059467}
+  whiteTurnButtonImage: {fileID: 1315465796}
+  activeSprite: {fileID: -760638781232810543, guid: e94076010eedec446bb67b4e0e90571c, type: 3}
+  inactiveSprite: {fileID: -3214960005836539356, guid: 7a23e89e56951904984ec0dfc67ee868, type: 3}
 --- !u!4 &2058167379
 Transform:
   m_ObjectHideFlags: 0
