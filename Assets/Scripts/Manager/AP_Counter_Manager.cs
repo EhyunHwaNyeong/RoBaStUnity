@@ -22,7 +22,7 @@ public class AP_Counter_Manager : MonoBehaviour
 
     [Header("설정")]
     private int maxAP;          // 요구사항: 3으로 고정
-    private int restoreAmount = 3;  // 요구사항: 턴 변경 시 회복
+    private int restoreAmount = 2;  // 요구사항: 턴 변경 시 회복
 
     [Header("실시간 AP")]
     public int blackCurrentAP;
