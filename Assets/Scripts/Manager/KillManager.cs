@@ -98,6 +98,10 @@ public class KillManager : MonoBehaviour
             unit.transform.SetParent(setting.deathArea);
             unit.transform.localPosition = Vector3.zero;
         }
+        if (WinManager.Instance != null)
+        {
+            WinManager.Instance.RegisterDeath(unit);
+        }
         unit.SetActive(false);
     }
 }
