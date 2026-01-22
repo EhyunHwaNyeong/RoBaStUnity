@@ -7,4 +7,9 @@ public class SecondMenu : MonoBehaviour
         {
             SceneManager.LoadSceneAsync("SampleScene");
         }
+
+    public void GoMainMenu()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
+    }
 }
