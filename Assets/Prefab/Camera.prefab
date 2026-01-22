@@ -176,6 +176,8 @@ GameObject:
   - component: {fileID: 2992057617712729147}
   - component: {fileID: 1919154467634451804}
   - component: {fileID: 9120888010322987439}
+  - component: {fileID: 426973031363402689}
+  - component: {fileID: 7310662010286620853}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -356,3 +358,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f86a5528c675a4281da04877809e50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ForceAspectRatio
+--- !u!114 &426973031363402689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6975699175427693366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c7c2b8e92595814db0fbb4734d08da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenu
+--- !u!114 &7310662010286620853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6975699175427693366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6bfb96eb7161ba4c95ae679c3e10d53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SecondMenu
