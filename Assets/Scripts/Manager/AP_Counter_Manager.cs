@@ -21,8 +21,8 @@ public class AP_Counter_Manager : MonoBehaviour
     public TeamAPUI blackTeamUI;
 
     [Header("설정")]
-    public int maxAP = 3;          // 요구사항: 3으로 고정
-    public int restoreAmount = 3;  // 요구사항: 턴 변경 시 회복
+    private int maxAP;          // 요구사항: 3으로 고정
+    private int restoreAmount = 3;  // 요구사항: 턴 변경 시 회복
 
     [Header("실시간 AP")]
     public int blackCurrentAP;
@@ -33,8 +33,11 @@ public class AP_Counter_Manager : MonoBehaviour
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
 
+        maxAP=GameSettings.MaxAP;
+
         blackCurrentAP = maxAP;
         whiteCurrentAP = maxAP;
+        Debug.Log($"[AP_Counter_Manager] 적용된 MaxAp={maxAP}");
     }
 
     void Start()
