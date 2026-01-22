@@ -123,7 +123,7 @@ public class AP_Counter_Manager : MonoBehaviour
     }
 
     // 현재 AP를 반환하는 보조 함수 (로그용)
-    private int GetTeamAP(string tag) => (tag == "Black") ? blackCurrentAP : whiteCurrentAP;
+    public int GetTeamAP(string tag) => (tag == "Black") ? blackCurrentAP : whiteCurrentAP;
 
     // 호환성 유지용 (내용은 UpdateAllUI와 동일)
     public void ShowTeamPanel(string tag)

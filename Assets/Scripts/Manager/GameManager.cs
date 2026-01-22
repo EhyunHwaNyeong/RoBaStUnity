@@ -147,7 +147,8 @@ public class GameManager : MonoBehaviour
         if(unitRef != null) unitRef.transform.position = endPos;
 
         Physics2D.SyncTransforms();
-        yield return new WaitForFixedUpdate();
+        KillManager.Instance.CheckAndApplyDeathRules();
+        // yield return new WaitForFixedUpdate();
         
         isMoving = false;
 
@@ -193,6 +194,7 @@ public class GameManager : MonoBehaviour
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.HandlePostActionUI(unitRef);
+                KillManager.Instance.CheckAndApplyDeathRules();
             }
                 
             // [중요] 회전 애니메이션이 끝난 후 AP가 0인지 확인하여 턴을 넘깁니다.

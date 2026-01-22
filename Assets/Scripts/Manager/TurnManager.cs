@@ -54,6 +54,8 @@ public class TurnManager : MonoBehaviour
     {
         isSwitchingTurn = true; 
 
+        KillManager.Instance.CheckTurnEndDeath(currentTurnTag);
+
         if (AP_Counter_Manager.Instance != null) 
             AP_Counter_Manager.Instance.ResetRestoreFlag();
 
@@ -73,10 +75,9 @@ public class TurnManager : MonoBehaviour
 
         // 4. 동일 프레임 내 중복 호출을 완전히 무시하기 위한 대기 시간
         // 이 시간 동안은 SwitchTurn()이 호출되어도 상단 if(isSwitchingTurn)에 의해 차단됨
-        yield return new WaitForSecondsRealtime(0.3f); 
-        
-        isSwitchingTurn = false;
         Debug.Log($"<color=cyan>턴 전환 시스템 안정화 완료</color>");
+        yield return new WaitForSecondsRealtime(0.3f); 
+        isSwitchingTurn = false;
     }
 
     private void ApplyTurnStart(string teamTag)

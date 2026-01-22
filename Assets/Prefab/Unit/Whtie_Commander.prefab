@@ -145,7 +145,7 @@ MonoBehaviour:
   hasMovedThisTurn: 0
   canMoveMultipleTimes: 1
   isDead: 0
-  deathCount: 0
+  _deathCount: 0
 --- !u!114 &-4804699273976703158
 MonoBehaviour:
   m_ObjectHideFlags: 0

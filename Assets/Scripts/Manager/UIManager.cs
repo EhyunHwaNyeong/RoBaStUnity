@@ -74,6 +74,9 @@ public class UIManager : MonoBehaviour
     {
         if (unit == null || currentPanelScript == null) return;
 
+        // 1. 현재 팀의 AP 정보 가져오기
+        int currentAP = AP_Counter_Manager.Instance.GetTeamAP(unit.tag);
+
         Vector3Int currentCell = GameManager.Instance.targetTilemap.WorldToCell(unit.transform.position);
         Vector3Int forwardDir = Vector3Int.RoundToInt(unit.transform.up);
         
@@ -82,12 +85,17 @@ public class UIManager : MonoBehaviour
 
         int obstacleMask = LayerMask.GetMask("Commander", "Knight");
 
+        // 2. 전진 조건: 타일 존재 + 장애물 없음 + AP 1 이상
         bool hasForwardTile = GameManager.Instance.targetTilemap.HasTile(targetForwardCell);
-        bool canForward = hasForwardTile && !GameManager.Instance.CheckTargetCellBlocked(targetForwardCell, obstacleMask);
+        bool canForward = hasForwardTile && 
+                        !GameManager.Instance.CheckTargetCellBlocked(targetForwardCell, obstacleMask) &&
+                        currentAP >= 1; // [추가]
 
+        // 3. 후진 조건: 타일 존재 + 장애물 없음 + AP 2 이상
         bool hasBackwardTile = GameManager.Instance.targetTilemap.HasTile(targetBackwardCell);
-        bool canBackward = hasBackwardTile && !GameManager.Instance.CheckTargetCellBlocked(targetBackwardCell, obstacleMask);
-
+        bool canBackward = hasBackwardTile && 
+                        !GameManager.Instance.CheckTargetCellBlocked(targetBackwardCell, obstacleMask) &&
+                        currentAP >= 2; // [핵심 수정: AP가 2 이상일 때만 true]
         // 공통 UI의 버튼 활성/비활성 설정
         currentPanelScript.SetNavigationButtons(canForward, canBackward, true, true);
     }

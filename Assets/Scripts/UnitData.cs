@@ -2,10 +2,44 @@ using UnityEngine;
 
 public class UnitData : MonoBehaviour
 {
+    [Header("Unit State")]
     public bool hasMovedThisTurn = false;
     public bool canMoveMultipleTimes = false;
-    public bool isDead = false;
-    public int deathCount = 0;
+
+    // 내부 저장용 변수
+    [SerializeField] private int _deathCount = 0;
+
+    // [추가] 프로퍼티를 통해 값이 변경될 때 로그 출력
+    public int deathCount 
+    {
+        get => _deathCount;
+        set 
+        {
+            // 원인 파악을 위해 조건문 밖으로 로그를 뺍니다.
+            Debug.Log($"[Set 호출됨] {gameObject.name}에게 들어온 값: {value} (기존 값: {_deathCount})");
+
+            if (_deathCount != value)
+            {
+                _deathCount = value;
+                Debug.Log($"<color=yellow>[Stack Update]</color> {gameObject.name}의 최종 스택: <b>{_deathCount}</b>");
+            }
+        }
+    }
+    private bool _isDead = false;
+
+    public bool isDead 
+    {
+        get => _isDead;
+        set {
+            _isDead = value;
+            if (_isDead) {
+                // 사망 시 실행할 로직을 여기에 넣을 수 있습니다.
+                Debug.Log($"{gameObject.name}이 사망 판정을 받았습니다.");
+                // 예: SpriteRenderer를 비활성화하거나 회색으로 변경
+                // GetComponent<SpriteRenderer>().color = Color.gray;
+            }
+        }
+    }
     
     private Vector3 originalScale;
 
